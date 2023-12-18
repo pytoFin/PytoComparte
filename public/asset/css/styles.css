@@ -1,0 +1,91 @@
+
+/* Estilo para la imagen de perfil circular */
+.profile-picture img {
+    border-radius: 50%;
+    overflow: hidden;
+}
+/* Estilo para alinear verticalmente el enlace con el sobre de correo electrónico */
+.email-icon {
+    display: inline-block;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+/*estilo para poner todos los botones de color azul*/
+.btn {
+  background-color: #3949dc;
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 10px 20px;
+  text-transform: uppercase;
+}
+/*estilo para poner todos los botones de color azul al pasar el mouse*/
+.btn:hover {
+    background-color: #041054;
+}
+/*imagen de fonfode la pagina*/
+
+body {
+    background-image: url("../../fotosJPG/fotografia2-e1537978531632.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+}  
+.card1 {
+    background-color: rgba(205, 214, 250, 0.733);
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    padding: 20px;
+    width: 600px;
+}
+
+/*todo el contindo ira centrado del cuerpo
+body {
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+*/
+
+
+.email-link {
+    display: inline-block;
+    vertical-align: middle;
+}
+/*Barra de navegacion fija y todos los div a la derecha
+nav {
+  /* Barra de navegación fija y que ocupe todo el ancho de la pagina
+    
+    position: fixed;
+    width: 100%;
+    background: #b372fd;
+  }
+    nav ul {
+        list-style: none;
+        overflow: hidden; /* Limpiamos errores de float 
+    }
+  nav ul li {
+    float: left;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+  }
+  nav ul li a {
+    display: block; /* Convertimos los elementos a en elementos bloque para manipular el padding 
+    padding: 20px;
+    color: #fff;
+    text-decoration: none;
+  }
+  nav ul li:hover {
+    background: #ad3e95;
+  }
+  */
