@@ -11,6 +11,11 @@
       
 
 @section('contenido')
+@if(isset($mateAdded)&&$mateAdded)
+<div class="alert alert-success mt-3">
+    <p>Nuevo contenido añadido con éxito</p>
+</div>
+@endif
 @if(isset($actualizado)&&$actualizado)
 <div class="alert alert-success mt-3">
     <p>contenido actualizado</p>
@@ -72,8 +77,11 @@
     </tbody>
 </table>
     </div>    
-
-</div>    
+    
+</div>
+<div class="float-end ms-2 mt-2 mb-3">
+    <button id="eliminarCuenta" class="btn btn-danger" data-id-usuario="{{$usuario->getId()}}">Eliminar Cuenta</button>
+</div>
 @endsection
 @section ('scripts')
 <script src="./js/confEliminaMat.js"></script>

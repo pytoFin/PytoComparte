@@ -45,6 +45,7 @@
         <h5 class="mt-2">Histórico de mensajes</h5>
             @foreach(array_reverse($msjsHilo) as $msjHilo)
            
+            @if($msjHilo !== null)
             <p class="card-text">De: {{ $msjHilo->getNomRemi() }}</p>
             <p class="card-text">Fecha: {{ $msjHilo->getFechaEnvio() }}</p>
             <p class="card-text">Contenido: {{ $msjHilo->getTexto() }}</p>
@@ -53,6 +54,9 @@
                 <img src="<?=$msjHilo->getAdjunto()?>" width="100" height="100">
                 @endif
             </p>
+            @else
+            <p class="card-title">Mensaje eliminado por su remitente</p>
+            @endif
             <hr>
             @endforeach
         @endif

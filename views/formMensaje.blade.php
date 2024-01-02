@@ -16,8 +16,8 @@
 <div class="col-md-3">
 <div class="d-flex flex-column">
     <a class="text-decoration-none text-dark" href="mensajes.php?buzonEnt">Buzón de entrada</a>
-    <a class="text-decoration-none text-dark" href="mensajes.php?redactar">Redactar mensaje</a>
-<!--    <a class="text-decoration-none text-dark" href="mensajes.php?menEnviados">Mensajes enviados</a> -->
+<!--    <a class="text-decoration-none text-dark" href="mensajes.php?redactar">Redactar mensaje</a>  -->
+    <a class="text-decoration-none text-dark" href="mensajes.php?menEnviados">Mensajes enviados</a> 
     <a class="text-decoration-none text-dark" href="mensajes.php?papelera">Papelera</a> 
 
 </div>
@@ -36,8 +36,8 @@
         </div>
         <div class="form-group mt-2">
             <label for="dest" class="d-block">Destinatari@: </label>
-            <input  class="<?= "form-control" . ((isset($destVacio)) || (isset($destInexis))) ? ($destVacio || $destInexis) ? "is-invalid" : "is-valid" : "" ?>"
-                    id='dest' name="dest" value="{{$dest??''}}">
+            <input  class= "form-control {{ (isset($destVacio) || isset($destInexis)) ? ($destVacio || $destInexis) ? 'is-invalid' : '' : '' }}"
+                    id="dest" name="dest" value="{{$destino??''}}">
             <div class=" invalid-feedback">
             @if(isset($destVacio)&&$destVacio)
             

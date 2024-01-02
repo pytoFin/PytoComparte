@@ -38,35 +38,30 @@ class UsuarioDao {
         
     }
 
-    function elimina($nombre) {
-        
+    function elimina(int $idUsuario) :bool{
+        $this->bd->setAttribute(PDO::ATTR_CASE, PDO::CASE_NATURAL);
+        $sql = "delete from usuarios where id=:id";
+        $stm = $this->bd->prepare($sql);
+        try {
+            return $result = $stm->execute([
+                ':id'=>$idUsuario
+            ]);
+        } catch (PDOException $ex) {
+            die('error al borrar usuario '.$ex->getMessage());
+        }
     }
 
-    /* function recuperaPorCredencial($nombre, $pwd) {
-      $this->bd->setAttribute(PDO::ATTR_CASE, PDO::CASE_NATURAL);
-      $pwdHashed = hash('sha256', $pwd);
-      $sql = 'select * from usuarios where usuario=:nombre and pass=:pwdHashed';
-      $sth = $this->bd->prepare($sql);
-      $sth->execute([":nombre" => $nombre, ":pwdHashed" => $pwdHashed]);
-      $sth->setFetchMode(PDO::FETCH_CLASS|PDO::FETCH_PROPS_LATE, Usuario::class);
-      $usuario = ($sth->fetch()) ?: null;
-      return $usuario;
-      } */
-
-    function recuperaPorCredencial($nombre, $pwd) {
+    function recuperaPorCredencial($nombre, $pwd) :?object{
         $this->bd->setAttribute(PDO::ATTR_CASE, PDO::CASE_NATURAL);
         $pwdHashed = hash('sha256', $pwd);
         $sql = 'select * from usuarios where nombre=:nombre and password=:pwdHashed';
-//        $sql = 'select * from usuarios where nombre=:nombre and password=:pwd';
         $sth = $this->bd->prepare($sql);
         $sth->execute([":nombre" => $nombre, ":pwdHashed" => $pwdHashed]);
-//        $sth->execute([":nombre" => $nombre, ":pwdHashed" => $pwd]);
-//        $sth->execute([":nombre" => $nombre, ":pwd" => $pwd]);
         $sth->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Usuario::class);
         $usuario = ($sth->fetch()) ?: null;
         return $usuario;
     }
-    function recuperaUsuarioPorId (int $id):?Usuario{
+    function recuperaUsuarioPorId (int $id):?object{
         $this->bd->setAttribute(PDO::ATTR_CASE, PDO::CASE_NATURAL);
         $sql = 'select * from usuarios where id=:id';
         $stm = $this->bd->prepare($sql);
@@ -79,7 +74,7 @@ class UsuarioDao {
             die("error al recuperar usuario por su id ".$ex->getMessage());
         }
     }
-    function recuperaUsuarioPorNombre (string $nombre):?Usuario{
+    function recuperaUsuarioPorNombre (string $nombre):?object{
         $this->bd->setAttribute(PDO::ATTR_CASE, PDO::CASE_NATURAL);
         $sql = 'select * from usuarios where nombre=:nombre';
         $stm = $this->bd->prepare($sql);

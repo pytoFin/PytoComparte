@@ -67,10 +67,10 @@ if(isset($_SESSION['usuario'])){
             $propietario = $usuario->getId();
             $newMaterial = new Material((int)$propietario, $descripcion, $dest);
             $materialDao->creaMaterial($newMaterial);
-            $mateAdded=true;
-            $descripcion = '';
- //           header('Location:index.php?nuevoUsuario');
-             echo $blade->run("formMateriales", compact('usuario','mateAdded'));
+ //           $mateAdded=true;
+ //           $descripcion = '';
+            header('Location:portada.php?mateAdded');
+ //            echo $blade->run("formMateriales", compact('usuario','mateAdded'));
         }
     }
     elseif (isset ($_REQUEST['edicion'])) { //llamado de v. portada.blade sobre la descripción
@@ -101,6 +101,7 @@ if(isset($_SESSION['usuario'])){
         else{
             //borra foto de material si la tiene
         $fotoOld !== "./asset/fotos_material/"? unlink($fotoOld):"";
+        unset($_SESSION['material']);
         guardaNFMaterial($newFoto);
         $owner = $material->getPropietario();
         $newContenido = new Material((int)$owner,$newDesc,$dest);

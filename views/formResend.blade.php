@@ -17,7 +17,7 @@
 <div class="d-flex flex-column">
     <a class="text-decoration-none text-dark" href="mensajes.php?buzonEnt">Buzón de entrada</a>
     <a class="text-decoration-none text-dark" href="mensajes.php?redactar">Redactar mensaje</a>
-<!--    <a class="text-decoration-none text-dark" href="mensajes.php?menEnviados">Mensajes enviados</a> -->
+    <a class="text-decoration-none text-dark" href="mensajes.php?menEnviados">Mensajes enviados</a>
     <a class="text-decoration-none text-dark" href="mensajes.php?papelera">Papelera</a> 
 
 </div>
@@ -37,8 +37,10 @@
         </div>
         <div class="form-group mt-2">
             <label for="dest" class="d-block">Destinatari@s: </label>
-            <input  class="<?= "form-control" . ((isset($destVacio)) || (isset($destInexis))) ? ($destVacio || $destInexis) ? "is-invalid" : "is-valid" : "" ?>"
-                    id='destino' name="destino" value="{{$dest??''}}">
+    <!--    <div class="col-xs-12">    -->
+            <input  class= "form-control {{ (isset($destVacio) || isset($destInexis)) ? ($destVacio || $destInexis) ? 'is-invalid' : '' : '' }}"
+                    id="destino" name="destino" value="{{$destino??''}}">
+            
             <div class=" invalid-feedback">
             @if(isset($destVacio)&&$destVacio)
             
@@ -47,6 +49,7 @@
             Destinatario indicado no existente
             @endif
             </div>
+    <!--   </div>    -->
         </div>
         
         

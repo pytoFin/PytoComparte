@@ -1,5 +1,5 @@
 @extends('app')
-@section('titulo', "mensajes de papelera")
+@section('titulo', "mensajes enviados")
 
 @section('cabecera')  
 <div class="float-start ms-5 mt-2">
@@ -18,34 +18,32 @@
 <div class="d-flex flex-column">
     <a class="text-decoration-none text-dark" href="mensajes.php?buzonEnt">Buzón de entrada</a>
     <a class="text-decoration-none text-dark" href="mensajes.php?redactar">Redactar mensaje</a>
-    <a class="text-decoration-none text-dark" href="mensajes.php?menEnviados">Mensajes enviados</a>
-<!--    <a class="text-decoration-none text-dark" href="mensajes.php?papelera">Papelera</a> -->
+<!--    <a class="text-decoration-none text-dark" href="mensajes.php?menEnviados">Mensajes enviados</a> -->
+    <a class="text-decoration-none text-dark" href="mensajes.php?papelera">Papelera</a> 
 
 </div>
 </div>
     <div class="col-md-9">
           <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3>Papelera</h3>
-                <button class="btn btn-secondary text-white" {{empty($msjsPapelera)?'disabled':''}}>
-                    <a class="text-decoration-none text-white" href="mensajes.php?vaciaPape">Vaciar Papelera</a>
-                </button>
+        <h3>Mensajes Enviados</h3>
+                
 
           </div>
         
         <table class="table table-striped table-dark">
     <thead>
         <tr>
-            <th scope="col" class="text-center">Remitente</th>
+            <th scope="col" class="text-center">Destinatari@</th>
             <th scope="col" class="text-center">Asunto</th>
             <th scope="col" class="text-center">Fecha de envío</th>
             <th scope="col" class="text-center">Fichero adjunto</th>
         </tr>
     </thead>
     <tbody>
-        @forelse($msjsPapelera as $msjUsu)
+        @forelse($msjsEnviados as $msjUsu)
         <tr class="text-center">
-           <td>{{$msjUsu->getNomRemi()}}</td>
-           <td><a href="mensajes.php?msjPapeShow&idMsj={{$msjUsu->getId()}}" class="text-decoration-none text-white">{{$msjUsu->getAsunto()}}</a></td>
+           <td>{{$msjUsu->getNomDesti()}}</td>
+           <td><a href="mensajes.php?msjEnvShow&idMsj={{$msjUsu->getId()}}" class="text-decoration-none text-white">{{$msjUsu->getAsunto()}}</a></td>
            <td> {{$msjUsu->getFechaEnvio()}}</td>
            @if($msjUsu->getAdjunto()!== "./asset/archivos_mensajes/")
            <td><i class="bi bi-paperclip"></i></td>
@@ -55,7 +53,7 @@
         </tr>
         @empty
     <tr>
-            <td colspan="4" class="text-center">no hay mensajes en la papelera</td>
+            <td colspan="4" class="text-center">no has enviado mensajes todavía</td>
         </tr>
         @endforelse
     </tbody>

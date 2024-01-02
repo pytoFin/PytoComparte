@@ -1,5 +1,5 @@
 @extends('app')
-@section('titulo', "lectura de mensaje")
+@section('titulo', "lectura de mensaje enviado")
 
 @section('cabecera')  
 <div class="float-start ms-5 mt-2">
@@ -25,27 +25,25 @@
 </div>
     <div class="col-md-9">
         <div class="card">
-        <div class="card-header">Detalles del mensaje</div>
+        <div class="card-header">Detalles del mensaje enviado</div>
         <div class="card-body">
             <h5 class="card-title">Asunto: {{ $msjSelecc->getAsunto() }}</h5>
-            <p class="card-text">De: {{ $msjSelecc->getNomRemi() }}</p>
+            <p class="card-text">Para: {{ $msjSelecc->getNomDesti() }}</p>
             <p class="card-text">Fecha: {{ $msjSelecc->getFechaEnvio() }}</p>
             <p class="card-text">Contenido: {{ $msjSelecc->getTexto() }}</p>
             <p class="card-text">fichero Adjunto:
-                @if($msjSelecc->getAdjunto() !== "./asset/archivos_mensajes/")
+                @if($msjSelecc->getAdjunto() !== "./asset/archivos_enviados/")
                 <img src="<?=$msjSelecc->getAdjunto()?>" width="100" height="100">
                 @endif
             </p>
-            <!-- Botones de Responder y Reenviar -->
-            <a href="mensajes.php?responMsj&idResMsj={{$msjSelecc->getId()}}" class="btn btn-primary">Responder</a>
-            <a href="mensajes.php?reenMsj&idReenMsj={{$msjSelecc->getId()}}" class="btn btn-secondary">Reenviar</a>
-            <a href="mensajes.php?papeMsj&idPapMsj={{$msjSelecc->getId()}}" class="btn btn-warning"><i class="bi bi-trash"></i></a>
+            <!-- eliminar msj enviado -->
+            <button data-enviado="{{$msjSelecc->getId()}}" name="borraEnv" id="borraEnv" ><i class="bi bi-trash"></i></button>
         </div>
     </div>
         @if(isset($msjsHilo))
         <h5 class="mt-2">Histórico de mensajes</h5>
             @foreach(array_reverse($msjsHilo) as $msjHilo)
-             
+           
             @if($msjHilo !== null)
             <p class="card-text">De: {{ $msjHilo->getNomRemi() }}</p>
             <p class="card-text">Fecha: {{ $msjHilo->getFechaEnvio() }}</p>
@@ -67,4 +65,5 @@
 </div>
 @endsection
 @section ('scripts')
+<script src="./js/confEliminaEnv.js"></script>
 @endsection

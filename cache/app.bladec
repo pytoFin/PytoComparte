@@ -11,7 +11,7 @@
  <link rel="stylesheet" href="../asset/css/styles.css">
  <title><?php echo $this->yieldContent('titulo'); ?></title>
  </head>
- <body style="background:#ff8a65">
+ <body style="background-image: url('./fotosJPG/fotografia2-e1537978531632.jpg')">
 
  <?php $this->startSection('cabecera'); ?>
  <?php if(isset($usuario)): ?>

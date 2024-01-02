@@ -48,7 +48,7 @@ class MaterialDao {
         
     }
 
-    function eliminaMaterial(int $id) {
+    function eliminaMaterial(int $id):bool {
         $this->bd->setAttribute(PDO::ATTR_CASE, PDO::CASE_NATURAL);
         $sql = "delete from materiales where id=:id";
         $stm = $this->bd->prepare($sql);
@@ -89,6 +89,16 @@ class MaterialDao {
             die('error al recuperar material de usuario: '.$ex->getMessage());
         }
         
+    }
+    function eliminaMaterialesPorUsuario (int $propietario): bool{  //elimina todas las publicaciones de un usuario
+        $materialesUsuario = $this->recuperaMaterialesPorUsuario($propietario);
+        if(!empty($materialesUsuario)){
+            foreach ($materialesUsuario as $materialUsuario){
+                $materialUsuario->getFoto()!== "./asset/fotos_material/"? unlink($materialUsuario->getFoto()):"";
+                $this->eliminaMaterial((int)$materialUsuario->getId());
+            }
+        }
+        return true;
     }
     
 

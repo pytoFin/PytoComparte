@@ -27,22 +27,48 @@
     background-color: #041054;
 }
 /*imagen de fonfode la pagina*/
-
 body {
-    background-image: url("../../fotosJPG/fotografia2-e1537978531632.jpg");
+    background-image: url("./fotosJPG/fotografia2-e1537978531632.jpg");
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    height: 100vh;
-}  
-.card1 {
-    background-color: rgba(205, 214, 250, 0.733);
-    border-radius: 5px;
+/*    height: 100vh;          
+ /*   overflow: hidden;       */ 
+    
+}
+/*estilo para table que el fundo sea blanco*/
+.table {
+    background-color: #fff;
+    border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5%;
     margin: 20px;
     padding: 20px;
-    width: 600px;
+    width: 400px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+.card1 {
+    background-color: rgba(248, 194, 155, 0.845);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5%;
+    margin: 20px;
+    padding: 20px;
+    width: 400px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+/*modificar y centrar el texto <div class="card-header">*/
+.card1 .card-header {
+    background-color: #773623;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    padding: 10px 20px;
+    text-transform: uppercase;
+}
+
+
 
 /*todo el contindo ira centrado del cuerpo
 body {

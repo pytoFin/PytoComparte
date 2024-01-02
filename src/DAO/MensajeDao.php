@@ -4,6 +4,7 @@ namespace App\DAO;
 
 use PDO;
 use App\Modelo\Mensaje;
+use App\Modelo\Usuario;
 
 class MensajeDao {
 
@@ -38,6 +39,30 @@ class MensajeDao {
         }
         
     }
+    function creaEnviado(object $mensaje):bool{
+        $this->bd->setAttribute(PDO::ATTR_CASE, PDO::CASE_NATURAL);
+        $sql = "insert into enviados (asunto,texto,idDesti,nomDesti,idRemi,nomRemi ,adjunto,fechaEnvio) "
+                . "values(:asunto,:texto,:idDesti,:nomDesti,:idRemi,:nomRemi,:adjunto,:fechaEnvio)";
+        $stm = $this->bd->prepare($sql);
+        try {
+            $fechaEnvioFormateada = $mensaje->getFechaEnvio()->format('Y-m-d H:i:s');
+            $resul = $stm->execute([
+               ':asunto'=>$mensaje->getAsunto(),
+                ':texto'=>$mensaje->getTexto(),
+                ':idDesti'=>$mensaje->getIdDesti(),
+                ':nomDesti'=>$mensaje->getNomDesti(),
+                ':idRemi'=>$mensaje->getIdRemi(),
+                ':nomRemi'=>$mensaje->getNomRemi(),
+                ':adjunto'=>$mensaje->getAdjunto(),
+                ':fechaEnvio'=>$fechaEnvioFormateada
+            ]);
+            return true;
+        } catch (PDOException $ex) {
+            return false;
+            
+            die('error al insertar mensaje enviado: '.$ex->getMessage());
+        }
+    }
 
     function modificaMensaje(object $mensaje, int $id) :bool{ //modifica el campo leido
         $this->bd->setAttribute(PDO::ATTR_CASE, PDO::CASE_NATURAL);
@@ -64,6 +89,20 @@ class MensajeDao {
                     ]);
         } catch (PDOException $ex) {
             die('error al actualizar elcampo hilo de mensaje '.$ex->getMessage());
+        }
+    }
+    
+    function modificaHiloMensajeEnv(object $mensaje, int $id) :bool{ //modifica el campo hilo en tabla enviados
+        $this->bd->setAttribute(PDO::ATTR_CASE, PDO::CASE_NATURAL);
+        $sql = "update enviados set hilo=:hilo where id=:id";
+        $sth = $this->bd->prepare($sql);
+        try {
+            return $result = $sth->execute([
+                ":hilo" => $mensaje->getHilo(),
+                ":id" => $id
+                    ]);
+        } catch (PDOException $ex) {
+            die('error al actualizar elcampo hilo de mensaje enviado '.$ex->getMessage());
         }
     }
 
@@ -110,14 +149,20 @@ class MensajeDao {
             die('error al recuperar mensajes de usuario: '.$ex->getMessage());
         }
     }
-    function recuperaMensajePorId(int $id): object {
+    function recuperaMensajePorId(int $id): ?object {
         $this->bd->setAttribute(PDO::ATTR_CASE, PDO::CASE_NATURAL);
         $sql = 'select * from mensajes where id=:id';
         $sth = $this->bd->prepare($sql);
         try {
             $sth->execute([":id" => $id]);
+            // Verificar si se recuperaron resultados antes de intentar fetch
+        if ($sth->rowCount() > 0) {
             $sth->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Mensaje::class);
-            return $material = $sth->fetch();    
+            return $material = $sth->fetch();
+        } else {
+            // No se encontraron resultados para el ID dado
+            return null;
+        }   
         } catch (PDOException $ex) {
             die('error al recuperar mensaje por su id: '.$ex->getMessage());
         }
@@ -136,6 +181,21 @@ class MensajeDao {
         }
         
     }
+    
+    function recuperaMensajeEnvPorId(int $id): object {
+        $this->bd->setAttribute(PDO::ATTR_CASE, PDO::CASE_NATURAL);
+        $sql = 'select * from enviados where id=:id';
+        $sth = $this->bd->prepare($sql);
+        try {
+            $sth->execute([":id" => $id]);
+            $sth->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Mensaje::class);
+            return $material = $sth->fetch();    
+        } catch (PDOException $ex) {
+            die('error al recuperar mensaje de enviados por su id: '.$ex->getMessage());
+        }
+        
+    }
+    
     function mueveMsjAPapelera(object $msj): bool {
     $sqlInsert = "INSERT INTO papelera (asunto,texto,idDesti,nomDesti,idRemi,nomRemi ,adjunto,leido,fechaEnvio,hilo)"
             . "values(:asunto,:texto,:idDesti,:nomDesti,:idRemi,:nomRemi,:adjunto,:leido,:fechaEnvio,:hilo)";
@@ -174,7 +234,17 @@ class MensajeDao {
     } catch (PDOException $ex) {
         die('Error al mover mensaje a la papelera: ' . $ex->getMessage());
     }
-}   
+}
+   function eliminaMsjEnviado(object $msj): bool {
+       $sqlDelete = "DELETE FROM enviados WHERE id = :id";
+    try {
+
+        $stmtDelete = $this->bd->prepare($sqlDelete);
+        return $stmtDelete->execute([':id' => $msj->getId()]);
+    } catch (PDOException $ex) {
+        die('Error al eliminar mensaje enviado: ' . $ex->getMessage());
+    }
+}
     function mueveMsjAEntrada(object $msj): bool {
     $sqlInsert = "INSERT INTO mensajes (asunto,texto,idDesti,nomDesti,idRemi,nomRemi ,adjunto,leido,fechaEnvio,hilo)"
             . "values(:asunto,:texto,:idDesti,:nomDesti,:idRemi,:nomRemi,:adjunto,:leido,:fechaEnvio,:hilo)";
@@ -224,9 +294,22 @@ class MensajeDao {
             $mensajes = $sth->fetchAll();
             return $mensajes;
         } catch (PDOException $ex) {
-            die('error al recuperar mensajes de usuario: '.$ex->getMessage());
+            die('error al recuperar mensajes de usuario de papelera: '.$ex->getMessage());
         }
-    } 
+    }
+    function recuperaMsjsPorUsuarioEnv(int $idRemi):Array{    //***********ENVIADOS******
+        $this->bd->setAttribute(PDO::ATTR_CASE, PDO::CASE_NATURAL);
+        $sql = 'select * from enviados where idRemi=:idRemi';
+        $sth = $this->bd->prepare($sql);
+        try {
+            $sth->execute([":idRemi" => $idRemi]);
+            $sth->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Mensaje::class);
+            $mensajes = $sth->fetchAll();
+            return $mensajes;
+        } catch (PDOException $ex) {
+            die('error al recuperar mensajes de usuario enviados: '.$ex->getMessage());
+        }        
+    }
     
     function vaciaPapeleraUsuario (int $idDesti): ?bool{
         try {
@@ -234,13 +317,40 @@ class MensajeDao {
             foreach ($msjsPapeUsu as $msjPapUsu){
                 $idMsjPape = (int)$msjPapUsu->getId();
                 $rutaAdjto = $msjPapUsu->getAdjunto();
-                $rutaAdjto !== "./asset/archivos_mensajes/" ? unlink($rutaAdjto):"";
+                
+                $rutaAdjto !== "./asset/archivos_mensajes/" && file_exists($rutaAdjto)? unlink($rutaAdjto):"";
                 $msjEliminado = $this->eliminaMensajePap($idMsjPape);
             }
             return true;
         } catch (PDOException $ex) {
             die("error al borrar mensajes de papelera: ".$ex->getMessage());
             return false;
+        }
+    }
+    function eliminaMsjsUsuario(int $idUsuario){ //elimina todos los mensajes de un usuario
+        
+        $msjsUsuario = $this->recuperaMensajesPorUsuario($idUsuario);
+        $msjsUsuarioPape = $this->recuperaMsjsPorUsuarioPape($idUsuario);
+        $msjsUsuarioEnv = $this->recuperaMsjsPorUsuarioEnv($idUsuario);
+        
+        if(!empty($msjsUsuarioPape)) {
+            $this->vaciaPapeleraUsuario($idUsuario);
+        }
+        
+        if(!empty($msjsUsuario)){
+            foreach ($msjsUsuario as $msjUsu){
+                $rutaAdjto = $msjUsu->getAdjunto();
+                $rutaAdjto!== "./asset/archivos_mensajes/" && file_exists($rutaAdjto)?unlink($rutaAdjto):"";
+                $this->eliminaMensaje((int)$msjUsu->getId());
+            }
+        }
+        
+        if(!empty ($msjsUsuarioEnv)) {
+            foreach ($msjsUsuarioEnv as $msjUsuEnv){
+                $rutaAdjto = $msjUsuEnv->getAdjunto();
+                $rutaAdjto !== "./asset/archivos_enviados/" && file_exists($rutaAdjto)? unlink($rutaAdjto):"";
+                $this->eliminaMsjEnviado($msjUsuEnv);
+            }
         }
     }
 

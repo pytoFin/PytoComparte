@@ -11,11 +11,7 @@
       
 
 @section('contenido')
-@if(isset($mateAdded)&&$mateAdded)
-<div class="alert alert-success mt-3">
-    <p>Nuevo contenido añadido con éxito</p>
-</div>
-@endif
+
 <div class="d-flex justify-content-center m-5">
     <h3><i class="bi bi-gear p-2 "></i>Nuevo Contenido</h3>
 </div>

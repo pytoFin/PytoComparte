@@ -1,5 +1,5 @@
 <?php $_shouldextend[1]=1; ?>
-<?php $this->startSection('titulo', "mensajes de papelera"); ?>
+<?php $this->startSection('titulo', "mensajes enviados"); ?>
 
 <?php $this->startSection('cabecera'); ?>  
 <div class="float-start ms-5 mt-2">
@@ -18,34 +18,32 @@
 <div class="d-flex flex-column">
  <a class="text-decoration-none text-dark" href="mensajes.php?buzonEnt">Buzón de entrada</a>
  <a class="text-decoration-none text-dark" href="mensajes.php?redactar">Redactar mensaje</a>
- <a class="text-decoration-none text-dark" href="mensajes.php?menEnviados">Mensajes enviados</a>
-<!--    <a class="text-decoration-none text-dark" href="mensajes.php?papelera">Papelera</a> -->
+<!--    <a class="text-decoration-none text-dark" href="mensajes.php?menEnviados">Mensajes enviados</a> -->
+ <a class="text-decoration-none text-dark" href="mensajes.php?papelera">Papelera</a> 
 
 </div>
 </div>
  <div class="col-md-9">
  <div class="d-flex justify-content-between align-items-center mb-3">
- <h3>Papelera</h3>
- <button class="btn btn-secondary text-white" <?php echo \htmlentities(empty($msjsPapelera)?'disabled':'', ENT_QUOTES, 'UTF-8', false); ?>>
- <a class="text-decoration-none text-white" href="mensajes.php?vaciaPape">Vaciar Papelera</a>
- </button>
+ <h3>Mensajes Enviados</h3>
+ 
 
  </div>
  
  <table class="table table-striped table-dark">
  <thead>
  <tr>
- <th scope="col" class="text-center">Remitente</th>
+ <th scope="col" class="text-center">Destinatari@</th>
  <th scope="col" class="text-center">Asunto</th>
  <th scope="col" class="text-center">Fecha de envío</th>
  <th scope="col" class="text-center">Fichero adjunto</th>
  </tr>
  </thead>
  <tbody>
- <?php $__empty_1 = true; foreach($msjsPapelera as $msjUsu): $__empty_1 = false; ?>
+ <?php $__empty_1 = true; foreach($msjsEnviados as $msjUsu): $__empty_1 = false; ?>
  <tr class="text-center">
- <td><?php echo \htmlentities($msjUsu->getNomRemi(), ENT_QUOTES, 'UTF-8', false); ?></td>
- <td><a href="mensajes.php?msjPapeShow&idMsj=<?php echo \htmlentities($msjUsu->getId(), ENT_QUOTES, 'UTF-8', false); ?>" class="text-decoration-none text-white"><?php echo \htmlentities($msjUsu->getAsunto(), ENT_QUOTES, 'UTF-8', false); ?></a></td>
+ <td><?php echo \htmlentities($msjUsu->getNomDesti(), ENT_QUOTES, 'UTF-8', false); ?></td>
+ <td><a href="mensajes.php?msjEnvShow&idMsj=<?php echo \htmlentities($msjUsu->getId(), ENT_QUOTES, 'UTF-8', false); ?>" class="text-decoration-none text-white"><?php echo \htmlentities($msjUsu->getAsunto(), ENT_QUOTES, 'UTF-8', false); ?></a></td>
  <td> <?php echo \htmlentities($msjUsu->getFechaEnvio(), ENT_QUOTES, 'UTF-8', false); ?></td>
  <?php if($msjUsu->getAdjunto()!== "./asset/archivos_mensajes/"): ?>
  <td><i class="bi bi-paperclip"></i></td>
@@ -55,7 +53,7 @@
  </tr>
  <?php endforeach; if ($__empty_1): ?>
  <tr>
- <td colspan="4" class="text-center">no hay mensajes en la papelera</td>
+ <td colspan="4" class="text-center">no has enviado mensajes todavía</td>
  </tr>
  <?php endif; ?>
  </tbody>
